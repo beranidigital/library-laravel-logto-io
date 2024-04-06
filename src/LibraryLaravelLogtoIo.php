@@ -2,6 +2,8 @@
 
 namespace BeraniDigital\LibraryLaravelLogtoIo;
 
+use Closure;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Logto\Sdk\InteractionMode;
 use Logto\Sdk\LogtoClient;
 use Logto\Sdk\LogtoConfig;
@@ -26,6 +28,10 @@ class LibraryLaravelLogtoIo extends LogtoClient
 
     }
 
+    public function getSubject(): string
+    {
+        return $this->fetchUserInfo()->sub;
+    }
     public function config(): LogtoConfig
     {
         return $this->config;
