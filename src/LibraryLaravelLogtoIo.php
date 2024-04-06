@@ -2,14 +2,11 @@
 
 namespace BeraniDigital\LibraryLaravelLogtoIo;
 
-use Logto\Sdk\InteractionMode;
 use Logto\Sdk\LogtoClient;
 use Logto\Sdk\LogtoConfig;
 
 class LibraryLaravelLogtoIo extends LogtoClient
 {
-
-
     public function __construct()
     {
         $endpoint = config('log-to.endpoint');
@@ -30,6 +27,4 @@ class LibraryLaravelLogtoIo extends LogtoClient
     {
         return $this->config;
     }
-
-
 }
