@@ -2,9 +2,7 @@
 
 namespace BeraniDigital\LibraryLaravelLogtoIo;
 
-use Closure;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Logto\Sdk\InteractionMode;
+use BeraniDigital\LibraryLaravelLogtoIo\Extensions\LaravelSession;
 use Logto\Sdk\LogtoClient;
 use Logto\Sdk\LogtoConfig;
 
@@ -14,17 +12,17 @@ class LibraryLaravelLogtoIo extends LogtoClient
 
     public function __construct()
     {
-        $endpoint = config('log-to.endpoint');
-        $appId = config('log-to.app_id');
-        $appSecret = config('log-to.app_secret');
+        $endpoint = config('logto-io.endpoint');
+        $appId = config('logto-io.app_id');
+        $appSecret = config('logto-io.app_secret');
         if (empty($endpoint) || empty($appId) || empty($appSecret)) {
             throw new \Exception('Logto configuration is not set');
         }
         parent::__construct(new LogtoConfig(
-            config('log-to.endpoint'),
-            config('log-to.app_id'),
-            config('log-to.app_secret')
-        ));
+            config('logto-io.endpoint'),
+            config('logto-io.app_id'),
+            config('logto-io.app_secret')
+        ), new LaravelSession());
 
     }
 

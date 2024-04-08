@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Facade;
  * @mixin \BeraniDigital\LibraryLaravelLogtoIo\LibraryLaravelLogtoIo
  * @method static fetchUserInfo(): Logto\Sdk\Oidc\UserInfoResponse
  * @method static signIn(string $route)
- * @method static signOut(string $route)
+ * @method static signOut(?string $postLogoutRedirectUri = null): string
  * @method static isAuthenticated(): bool
  * @method static getIdTokenClaims()
  * @method static handleSignInCallback()

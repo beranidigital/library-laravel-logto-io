@@ -7,14 +7,6 @@
 
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/library-laravel-logto-io.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/library-laravel-logto-io)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
 ## Installation
 
 You can install the package via composer:
@@ -52,8 +44,61 @@ php artisan vendor:publish --tag="library-laravel-logto-io-views"
 ## Usage
 
 ```php
-$libraryLaravelLogtoIo = new BeraniDigital\LibraryLaravelLogtoIo();
-echo $libraryLaravelLogtoIo->echoPhrase('Hello, BeraniDigital!');
+// app/Policies/AppServiceProvider.php
+      use BeraniDigital\LibraryLaravelLogtoIo\Facades\LibraryLaravelLogtoIo;
+    public function register(): void
+    {
+        
+        LibraryLaravelLogtoIo::config()->scopes = [
+            \Logto\Sdk\Constants\UserScope::profile,
+            \Logto\Sdk\Constants\UserScope::email,
+            \Logto\Sdk\Constants\UserScope::phone,
+            \Logto\Sdk\Constants\UserScope::identities,
+            \Logto\Sdk\Constants\UserScope::roles,
+        ];
+        LibraryLaravelLogtoIo::config()->resources = [
+          // add your resources here
+        ];
+    }
+```
+
+```php
+// routes/web.php
+Route::get('/auth/callback', function () {
+    try {
+        \BeraniDigital\LibraryLaravelLogtoIo\Facades\LibraryLaravelLogtoIo::handleSignInCallback();
+    }catch (\Logto\Sdk\LogtoException $e){
+        return redirect()->route('login')->with('error', $e->getMessage());
+    }
+    $logToUser = \BeraniDigital\LibraryLaravelLogtoIo\Facades\LibraryLaravelLogtoIo::fetchUserInfo();
+    $user = \App\Models\User::where('logto_id', $logToUser->sub)->first();
+    if(!$user){
+        $user = new \App\Models\User;
+        $user->logto_id = $logToUser->sub;
+        $faker = \Faker\Factory::create();
+        $user->name = $logToUser->name ?? $logToUser->username ?? $logToUser->email ?? $faker->numerify('User ####');
+    }
+    // always fetch latest user's email and phone number after login
+    $user->phone = $logToUser->phone_number;
+    $user->email = $logToUser->email;
+    $user->email_verified_at = $logToUser->email_verified ? now() : null;
+    $user->save();
+
+    \Illuminate\Support\Facades\Auth::login($user);
+    return redirect()->route('home');
+})->name('auth.callback');
+
+Route::get('/login', function () {
+    return redirect(\BeraniDigital\LibraryLaravelLogtoIo\Facades\LibraryLaravelLogtoIo::signIn(route('auth.callback')));
+})->name('login');
+
+function logout() {
+    \Illuminate\Support\Facades\Auth::logout();
+    return redirect(\BeraniDigital\LibraryLaravelLogtoIo\Facades\LibraryLaravelLogtoIo::signOut(route('home')));
+}
+Route::get('/logout', function () {
+    return logout();
+})->name('logout');
 ```
 
 ## Testing
