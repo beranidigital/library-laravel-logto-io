@@ -7,7 +7,6 @@ use Logto\Sdk\Storage\StorageKey;
 
 class LaravelSession implements \Logto\Sdk\Storage\Storage
 {
-
     public function get(StorageKey $key): ?string
     {
         return Session::get($key->value);

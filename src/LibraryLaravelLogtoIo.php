@@ -8,8 +8,6 @@ use Logto\Sdk\LogtoConfig;
 
 class LibraryLaravelLogtoIo extends LogtoClient
 {
-
-
     public function __construct()
     {
         $endpoint = config('logto-io.endpoint');
@@ -30,10 +28,9 @@ class LibraryLaravelLogtoIo extends LogtoClient
     {
         return $this->fetchUserInfo()->sub;
     }
+
     public function config(): LogtoConfig
     {
         return $this->config;
     }
-
-
 }
