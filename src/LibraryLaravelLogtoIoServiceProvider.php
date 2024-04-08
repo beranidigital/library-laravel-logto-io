@@ -2,9 +2,9 @@
 
 namespace BeraniDigital\LibraryLaravelLogtoIo;
 
+use BeraniDigital\LibraryLaravelLogtoIo\Commands\LibraryLaravelLogtoIoCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use BeraniDigital\LibraryLaravelLogtoIo\Commands\LibraryLaravelLogtoIoCommand;
 
 class LibraryLaravelLogtoIoServiceProvider extends PackageServiceProvider
 {

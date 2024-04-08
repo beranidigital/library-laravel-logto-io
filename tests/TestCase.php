@@ -2,9 +2,9 @@
 
 namespace BeraniDigital\LibraryLaravelLogtoIo\Tests;
 
+use BeraniDigital\LibraryLaravelLogtoIo\LibraryLaravelLogtoIoServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use BeraniDigital\LibraryLaravelLogtoIo\LibraryLaravelLogtoIoServiceProvider;
 
 class TestCase extends Orchestra
 {
